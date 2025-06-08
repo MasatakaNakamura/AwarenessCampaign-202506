@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM活用術 | 社内勉強会</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .event-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .features {
+            margin: 30px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .notice {
+            background: rgba(255, 243, 205, 0.9);
+            border: 1px solid #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .notice-title {
+            font-weight: bold;
+            color: #b8860b;
+            margin-bottom: 10px;
+        }
+
+        .agenda {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .agenda h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .agenda-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .agenda-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .agenda-time {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            min-width: 80px;
+            text-align: center;
+            margin-right: 15px;
+        }
+
+        .agenda-content {
+            flex: 1;
+        }
+
+        .agenda-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .agenda-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .hero-section {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-section">
+            <div class="badge">🚀 第一システム6月啓蒙活動</div>
+            <h1>そのドキュメント業務、<br>AIに任せませんか？</h1>
+            <p class="subtitle">あなたのためのAIアシスタント NotebookLM 徹底活用術</p>
+            
+            <div class="event-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">📅 開催日時</div>
+                        <div class="info-value" id="event-date">YYYY/MM/DD HH:MI ～</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">⏰ 所要時間</div>
+                        <div class="info-value">約60分</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">💻 形式</div>
+                        <div class="info-value">オンライン（Google Meet）</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🎯 対象</div>
+                        <div class="info-value">興味がある方すべて</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h2 style="text-align: center; color: white; margin-bottom: 30px;">こんな方におすすめ</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📚</span>
+                    <div class="feature-title">仕様書の読み込みに時間がかかる</div>
+                    <div class="feature-desc">複雑な仕様書から必要な情報を素早く見つけたい</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <div class="feature-title">技術調査・キャッチアップが大変</div>
+                    <div class="feature-desc">新しい技術やライブラリの情報収集を効率化したい</div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">✍️</span>
+                    <div class="feature-title">ドキュメント作成が面倒</div>
+                    <div class="feature-desc">README作成やコメント記述の時間を短縮したい</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="agenda">
+            <h3>📋 当日のプログラム</h3>
+            <div class="agenda-item">
+                <div class="agenda-time">5分</div>
+                <div class="agenda-content">
+                    <div class="agenda-title">導入：エンジニアの「あるある」な悩み</div>
+                    <div class="agenda-desc">ドキュメント業務でよくある課題を共有</div>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">10分</div>
+                <div class="agenda-content">
+                    <div class="agenda-title">NotebookLMとは？</div>
+                    <div class="agenda-desc">ChatGPTとの違いや、"専属アシスタント"としての特徴</div>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">30分</div>
+                <div class="agenda-content">
+                    <div class="agenda-title">【実演】エンジニアの日常業務がこう変わる</div>
+                    <div class="agenda-desc">仕様理解・技術調査・ドキュメント作成の実践デモ</div>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">10分</div>
+                <div class="agenda-content">
+                    <div class="agenda-title">賢い使い方とお約束</div>
+                    <div class="agenda-desc">セキュリティ面の注意点と質疑応答</div>
+                </div>
+            </div>
+            <div class="agenda-item">
+                <div class="agenda-time">5分</div>
+                <div class="agenda-content">
+                    <div class="agenda-title">まとめと"はじめの一歩"</div>
+                    <div class="agenda-desc">具体的な活用方法の提案</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="notice">
+            <div class="notice-title">✅ 参加について</div>
+            <p>事前の申し込みは不要です。<br>当日、開始時刻になりましたら下のボタンからご参加ください。<br>
+            事前準備も一切不要です。お気軽にご参加ください！</p>
+        </div>
+
+        <div class="cta-section">
+            <button class="cta-button" id="join-button" onclick="joinMeeting()">
+                🚀 参加する（Google Meet）
+            </button>
+            <p style="margin-top: 15px; color: white; font-size: 14px;">
+                ※開始時刻になるまでボタンは無効です
+            </p>
+        </div>
+
+        <div class="contact">
+            <p><strong>お問い合わせ</strong><br>
+            何かご質問がございましたら、第一システム事業部 中村 までお気軽にご連絡ください。<br>
+            Google Meet URL: <a href="https://meet.google.com/sos-tnds-pno" target="_blank">https://meet.google.com/sos-tnds-pno</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Google Meet URL（実際のURLに置き換えてください）
+        const GOOGLE_MEET_URL = "https://meet.google.com/sos-tnds-pno";
+        
+        // 開催日時を設定（実際の日時に置き換えてください）
+        const EVENT_DATE = new Date('2025-06-25T19:00:00'); // YYYY-MM-DDTHH:MM:SS形式
+        
+        // 日時表示を更新
+        function updateEventDate() {
+            const dateStr = EVENT_DATE.toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }) + ' ' + EVENT_DATE.toLocaleTimeString('ja-JP', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + ' ～';
+            
+            document.getElementById('event-date').textContent = dateStr;
+        }
+        
+        // ボタンの有効/無効を制御
+        function updateButtonState() {
+            const now = new Date();
+            const button = document.getElementById('join-button');
+            
+            // 開始10分前から参加可能にする
+            const joinableTime = new Date(EVENT_DATE.getTime() - 10 * 60 * 1000);
+            
+            if (now >= joinableTime) {
+                button.disabled = false;
+                button.textContent = '🚀 参加する（Google Meet）';
+                button.style.background = 'linear-gradient(45deg, #FF6B6B, #4ECDC4)';
+            } else {
+                button.disabled = true;
+                const timeLeft = Math.ceil((joinableTime - now) / (1000 * 60));
+                if (timeLeft > 60) {
+                    const hoursLeft = Math.ceil(timeLeft / 60);
+                    button.textContent = `⏰ ${hoursLeft}時間後に参加可能`;
+                } else {
+                    button.textContent = `⏰ ${timeLeft}分後に参加可能`;
+                }
+                button.style.background = '#ccc';
+            }
+        }
+        
+        // Google Meetに参加
+        function joinMeeting() {
+            if (!document.getElementById('join-button').disabled) {
+                window.open(GOOGLE_MEET_URL, '_blank');
+            }
+        }
+        
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateEventDate();
+            updateButtonState();
+            
+            // 1分ごとにボタンの状態を更新
+            setInterval(updateButtonState, 60000);
+        });
+    </script>
+</body>
+</html>
