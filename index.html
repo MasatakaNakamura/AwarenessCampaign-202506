@@ -285,7 +285,7 @@
             <div class="event-info">
                 <div class="info-grid">
                     <div class="info-item">
-                        <div class="info-label">📅 開催日時</div>
+                        <div class="info-label">📅 開催日時（曜日付）</div>
                         <div class="info-value" id="event-date">YYYY/MM/DD HH:MI ～</div>
                     </div>
                     <div class="info-item">
@@ -391,19 +391,18 @@
         const GOOGLE_MEET_URL = "https://meet.google.com/sos-tnds-pno";
         
         // 開催日時を設定（実際の日時に置き換えてください）
-        const EVENT_DATE = new Date('2025-06-25T19:00:00'); // YYYY-MM-DDTHH:MM:SS形式
+        const EVENT_DATE = new Date('2025-06-25T19:30:00'); // YYYY-MM-DDTHH:MM:SS形式
         
         // 日時表示を更新
         function updateEventDate() {
-            const dateStr = EVENT_DATE.toLocaleDateString('ja-JP', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            }) + ' ' + EVENT_DATE.toLocaleTimeString('ja-JP', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }) + ' ～';
-            
+            const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+            const y = EVENT_DATE.getFullYear();
+            const m = ('0' + (EVENT_DATE.getMonth() + 1)).slice(-2);
+            const d = ('0' + EVENT_DATE.getDate()).slice(-2);
+            const w = weekDays[EVENT_DATE.getDay()];
+            const h = ('0' + EVENT_DATE.getHours()).slice(-2);
+            const min = ('0' + EVENT_DATE.getMinutes()).slice(-2);
+            const dateStr = `${y}/${m}/${d} (${w}) ${h}:${min} ～`;
             document.getElementById('event-date').textContent = dateStr;
         }
         
